@@ -1,0 +1,7 @@
+data_quality_observability:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: target/portfolio.duckdb
+      threads: 1

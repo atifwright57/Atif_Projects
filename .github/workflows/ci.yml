@@ -1,0 +1,79 @@
+name: Data Engineering CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-and-dbt:
+    name: Python, Great Expectations, and dbt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: projects/data-quality-observability/requirements.txt
+
+      - name: Install quality dependencies
+        run: python -m pip install -r requirements.txt
+        working-directory: projects/data-quality-observability
+
+      - name: Run Python unit tests
+        run: python -m unittest discover -s tests -v
+        working-directory: projects/data-quality-observability
+
+      - name: Validate sample data contract
+        run: python quality/great_expectations_check.py
+        working-directory: projects/data-quality-observability
+
+      - name: Configure local dbt profile
+        run: cp profiles.yml.example profiles.yml
+        working-directory: projects/data-quality-observability/dbt
+
+      - name: Seed local DuckDB
+        run: dbt seed --profiles-dir .
+        working-directory: projects/data-quality-observability/dbt
+
+      - name: Build dbt models and run dbt tests
+        run: dbt build --profiles-dir .
+        working-directory: projects/data-quality-observability/dbt
+
+  terraform-plan:
+    name: Terraform plan
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ci-plan-placeholder
+      AWS_SECRET_ACCESS_KEY: ci-plan-placeholder
+      AWS_DEFAULT_REGION: us-east-1
+      DATABRICKS_TOKEN: ci-plan-placeholder
+    defaults:
+      run:
+        working-directory: projects/enterprise-lakehouse-platform/terraform
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.10.5"
+          terraform_wrapper: false
+
+      - name: Initialize Terraform without a backend
+        run: terraform init -backend=false -input=false
+
+      - name: Validate Terraform configuration
+        run: terraform validate
+
+      - name: Plan without refreshing cloud resources
+        run: terraform plan -refresh=false -input=false -var-file=terraform.tfvars.example

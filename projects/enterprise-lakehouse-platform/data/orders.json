@@ -1,0 +1,4 @@
+{"event_id":"evt-1001","customer_id":"cust-01","region":"east","amount":42.50,"event_ts":"2025-01-15T10:15:00Z","status":"complete"}
+{"event_id":"evt-1002","customer_id":"cust-02","region":"west","amount":18.75,"event_ts":"2025-01-15T11:20:00Z","status":"complete"}
+{"event_id":"evt-1003","customer_id":"cust-01","region":"east","amount":63.00,"event_ts":"2025-01-16T08:05:00Z","status":"pending"}
+{"event_id":"evt-1002","customer_id":"cust-02","region":"west","amount":18.75,"event_ts":"2025-01-15T11:20:00Z","status":"complete"}

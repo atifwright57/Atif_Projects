@@ -1,0 +1,13 @@
+name_prefix                    = "portfolio-lakehouse"
+workspace_name                 = "portfolio-lakehouse"
+aws_region                     = "us-east-1"
+databricks_account_id           = "00000000-0000-0000-0000-000000000000"
+databricks_cross_account_role_arn = "arn:aws:iam::123456789012:role/databricks-cross-account"
+unity_catalog_role_arn          = "arn:aws:iam::123456789012:role/databricks-unity-catalog"
+unity_catalog_role_name         = "databricks-unity-catalog"
+pricing_tier                    = "PREMIUM"
+
+tags = {
+  Project     = "enterprise-lakehouse"
+  Environment = "portfolio"
+}

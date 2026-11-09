@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+terraform.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local Spark / Delta output
+projects/**/data/delta/
+projects/**/data/checkpoints/
+projects/**/spark-warehouse/
+projects/**/dbt/target/
+projects/**/dbt/logs/
+projects/**/dbt/profiles.yml
+metastore_db/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

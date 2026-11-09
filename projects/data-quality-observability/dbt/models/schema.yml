@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Typed and normalized order records sourced from the orders seed.
+    columns:
+      - name: order_id
+        description: Stable business identifier for an order.
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+      - name: order_ts
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["created", "updated", "completed"]
+      - name: amount
+        tests:
+          - not_null
+          - non_negative
